@@ -10,7 +10,7 @@ data class Player(val name: String, val cards: MutableList<Card> = mutableListOf
         return score
     }
 
-    private fun isExistAce(): Boolean {
+    fun isExistAce(): Boolean {
         return cards.find { it.denomination == Denomination.ACE } != null
     }
 
@@ -18,9 +18,9 @@ data class Player(val name: String, val cards: MutableList<Card> = mutableListOf
         return calculateScore() < BLACK_JACK_SCORE
     }
 
-    fun drawCard(card: Card): Boolean {
+    fun drawCard(deck: Deck): Boolean {
         return if (isAbleToDraw()) {
-            cards.add(card)
+            cards.add(deck.draw())
             true
         } else {
             false

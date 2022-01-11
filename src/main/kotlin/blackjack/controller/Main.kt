@@ -26,14 +26,14 @@ fun initPlayers(names: List<String>): List<Player> {
 
 fun startGame(players: List<Player>, deck: Deck) {
     players.forEach { player ->
-        repeat(2) { player.drawCard(deck.draw()) }
+        repeat(2) { player.drawCard(deck) }
     }
 }
 
 fun drawMore(player: Player, deck: Deck) {
     while (InputView.askMoreCard(player.name)) {
         if (player.isAbleToDraw()) {
-            player.drawCard(deck.draw())
+            player.drawCard(deck)
             ResultView.showPlayerCards(player)
         } else {
             ResultView.showCannotMoreDraw()
