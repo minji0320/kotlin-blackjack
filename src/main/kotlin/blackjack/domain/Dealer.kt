@@ -1,6 +1,6 @@
 package blackjack.domain
 
-class Dealer : Player(NAME) {
+class Dealer(override val cards: MutableList<Card> = mutableListOf()) : Player(NAME, cards) {
     override fun isAbleToDraw(): Boolean {
         return calculateScore() <= CRITERIA_FOR_MORE_DRAW
     }
