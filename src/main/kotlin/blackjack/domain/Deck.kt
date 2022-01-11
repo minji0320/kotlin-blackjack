@@ -14,6 +14,8 @@ class Deck {
     }
 
     fun draw(): Card {
+        require(cards.size > 0) { EMPTY_DECK_EXCEPTION_MSG }
+
         val card = cards.random()
         cards.remove(card)
 
@@ -21,4 +23,8 @@ class Deck {
     }
 
     fun size(): Int = cards.size
+
+    companion object {
+        private const val EMPTY_DECK_EXCEPTION_MSG: String = "Deck의 카드가 모두 소진되었습니다."
+    }
 }
