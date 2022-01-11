@@ -4,6 +4,7 @@ import blackjack.domain.Player
 
 object ResultView {
     private const val DRAW_TWO_CARDS = "\n%s에게 2장을 나누어 주었습니다."
+    private const val CANNOT_MORE_CARD = "더 이상 카드를 받을 수 없습니다."
     private const val SHOW_PLAYER_CARDS = "%s카드: %s"
 
     fun showStartGame(names: List<String>, players: List<Player>) {
@@ -16,5 +17,9 @@ object ResultView {
 
     fun showPlayerCards(player: Player) {
         println(SHOW_PLAYER_CARDS.format(player.name, player.cards.joinToString(", ")))
+    }
+
+    fun showCannotMoreDraw() {
+        println(CANNOT_MORE_CARD)
     }
 }
