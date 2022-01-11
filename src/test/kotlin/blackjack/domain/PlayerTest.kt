@@ -1,25 +1,71 @@
 package blackjack.domain
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class PlayerTest {
     private lateinit var deck: Deck
     private lateinit var player: Player
 
-    @BeforeEach
-    fun setUp() {
+    @Test
+    fun `플레이어가 카드 draw 시 보유한 카드 개수 증가하는지 테스트`() {
         deck = Deck()
         player = Player("A")
+        player.drawCard(deck)
+        assertThat(player.cards.size).isEqualTo(1)
+
+        player.drawCard(deck)
+        assertThat(player.cards.size).isEqualTo(2)
     }
 
     @Test
-    fun `플레이어가 카드 draw 시 보유한 카드 개수 증가하는지 테스트`() {
-        player.drawCard(deck.draw())
-        assertThat(player.cards.size).isEqualTo(1)
+    fun `플레이어가 ACE 카드를 보유한 경우`() {
+        player = Player("A", mutableListOf(Card(Suit.CLUBS, Denomination.ACE)))
+        assertThat(player.isExistAce()).isTrue
+    }
 
-        player.drawCard(deck.draw())
-        assertThat(player.cards.size).isEqualTo(2)
+    @Test
+    fun `플레이어 점수 계산 테스트`() {
+        player = Player("A", mutableListOf(Card(Suit.CLUBS, Denomination.SEVEN)))
+        assertThat(player.calculateScore()).isEqualTo(7)
+    }
+
+    @Test
+    fun `ACE 카드가 11점으로 계산되는 경우`() {
+        player = Player(
+            "A",
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.ACE),
+                Card(Suit.CLUBS, Denomination.FIVE)
+            )
+        )
+        assertThat(player.calculateScore()).isEqualTo(16)
+    }
+
+    @Test
+    fun `ACE 카드가 1점으로 계산되는 경우`() {
+        player = Player(
+            "A",
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.ACE),
+                Card(Suit.HEARTS, Denomination.FIVE),
+                Card(Suit.DIAMONDS, Denomination.EIGHT)
+            )
+        )
+        assertThat(player.calculateScore()).isEqualTo(14)
+    }
+
+    @Test
+    fun `21점 이상인 경우 draw 불가능`() {
+        player = Player(
+            "A",
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.SEVEN),
+                Card(Suit.HEARTS, Denomination.TEN),
+                Card(Suit.DIAMONDS, Denomination.EIGHT)
+            )
+        )
+
+        assertThat(player.isAbleToDraw()).isFalse
     }
 }
