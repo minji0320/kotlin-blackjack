@@ -15,12 +15,7 @@ fun main() {
     startGame(players, dealer, deck)
     ResultView.showStartGame(playerNames, players, dealer)
 
-    players.forEach { drawMore(it, deck) }
-    if(dealer.isAbleToDraw()) {
-        dealer.drawCard(deck)
-        ResultView.showMoreCard()
-    }
-
+    playGame(players, dealer, deck)
     ResultView.showGameResult(players, dealer)
 }
 
@@ -35,6 +30,19 @@ fun initPlayers(names: List<String>): List<Player> {
 fun startGame(players: List<Player>, dealer: Dealer, deck: Deck) {
     dealer.drawCard(deck, 2)
     players.forEach { it.drawCard(deck, 2) }
+}
+
+fun playGame(players: List<Player>, dealer: Dealer, deck: Deck) {
+    players.forEach { drawMore(it, deck) }
+
+    if (dealer.isAbleToDraw()) {
+        dealer.drawCard(deck)
+        ResultView.showMoreCard()
+    }
+
+    if (dealer.isBust()) {
+        ResultView.showBust()
+    }
 }
 
 fun drawMore(player: Player, deck: Deck) {

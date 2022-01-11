@@ -9,6 +9,7 @@ object ResultView {
     private const val SHOW_PLAYER_CARDS = "%s카드: %s"
     private const val SHOW_DEALER_CARD = "딜러: %s"
     private const val MORE_CARD = "\n딜러는 16이하라 한장의 카드를 더 받았습니다."
+    private const val BUST = "딜러의 점수가 21점을 초과하였습니다."
     private const val SHOW_PLAYER_CARDS_AND_SCORE = "%s카드: %s - 결과: %d"
 
     fun showStartGame(names: List<String>, players: List<Player>, dealer: Dealer) {
@@ -34,6 +35,10 @@ object ResultView {
 
     fun showMoreCard() {
         println(MORE_CARD)
+    }
+
+    fun showBust() {
+        println(BUST)
     }
 
     fun showGameResult(players: List<Player>, dealer: Dealer) {
