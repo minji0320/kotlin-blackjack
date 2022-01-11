@@ -14,6 +14,8 @@ fun main() {
     ResultView.showStartGame(playerNames, players)
 
     players.forEach { drawMore(it, deck) }
+
+    ResultView.showGameResult(players)
 }
 
 fun initPlayers(names: List<String>): List<Player> {
