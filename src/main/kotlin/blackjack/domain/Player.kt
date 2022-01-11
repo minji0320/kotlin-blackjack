@@ -1,6 +1,6 @@
 package blackjack.domain
 
-data class Player(val name: String, val cards: MutableList<Card> = mutableListOf()) {
+open class Player(open val name: String, open val cards: MutableList<Card> = mutableListOf()) {
     fun calculateScore(): Int {
         var score = cards.sumOf { it.denomination.score }
         if (isExistAce() && score <= CRITERIA_FOR_CHANGING_ACE) {
@@ -14,17 +14,12 @@ data class Player(val name: String, val cards: MutableList<Card> = mutableListOf
         return cards.find { it.denomination == Denomination.ACE } != null
     }
 
-    fun isAbleToDraw(): Boolean {
+    open fun isAbleToDraw(): Boolean {
         return calculateScore() < BLACK_JACK_SCORE
     }
 
-    fun drawCard(deck: Deck): Boolean {
-        return if (isAbleToDraw()) {
-            cards.add(deck.draw())
-            true
-        } else {
-            false
-        }
+    fun drawCard(deck: Deck, count: Int = 1) {
+        repeat(count) { cards.add(deck.draw()) }
     }
 
     companion object {
