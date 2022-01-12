@@ -45,7 +45,7 @@ open class Player(val name: String, open val cards: MutableList<Card> = mutableL
             isBlackjack() -> blackjack(dealer)
             score > dealer.score -> win(dealer)
             score == dealer.score -> tie(dealer)
-            else -> throw IllegalArgumentException()
+            else -> lose(dealer)
         }
     }
 

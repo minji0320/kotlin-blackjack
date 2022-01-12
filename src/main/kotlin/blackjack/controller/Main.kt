@@ -49,9 +49,7 @@ fun playGame(players: List<Player>, dealer: Dealer, deck: Deck) {
 
     players.forEach {
         it.compete(dealer)
-        println(it.profit)
     }
-    println(dealer.profit)
 }
 
 fun drawMore(player: Player, deck: Deck) {
