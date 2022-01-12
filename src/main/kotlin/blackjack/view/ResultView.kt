@@ -11,6 +11,8 @@ object ResultView {
     private const val MORE_CARD = "\n딜러는 16이하라 한장의 카드를 더 받았습니다."
     private const val BUST = "딜러의 점수가 21점을 초과하였습니다."
     private const val SHOW_PLAYER_CARDS_AND_SCORE = "%s카드: %s - 결과: %d"
+    private const val FINAL_RESULT_MSG = "\n## 최종 승패"
+    private const val FINAL_RESULT = "%s: %s"
 
     fun showStartGame(names: List<String>, players: List<Player>, dealer: Dealer) {
         println(DRAW_TWO_CARDS.format(names.joinToString(", ")))
@@ -46,6 +48,12 @@ object ResultView {
         println(SHOW_PLAYER_CARDS_AND_SCORE.format(dealer.name, dealer.cards.joinToString(", "), dealer.calculateScore()))
         players.forEach {
             println(SHOW_PLAYER_CARDS_AND_SCORE.format(it.name, it.cards.joinToString(", "), it.calculateScore()))
+        }
+
+        println(FINAL_RESULT_MSG)
+        println(FINAL_RESULT.format(dealer.name, dealer.convertResultToString()))
+        players.forEach {
+            println(FINAL_RESULT.format(it.name, it.convertResultToString()))
         }
     }
 }

@@ -43,6 +43,11 @@ fun playGame(players: List<Player>, dealer: Dealer, deck: Deck) {
     if (dealer.isBust()) {
         ResultView.showBust()
     }
+
+    players.forEach { playerA ->
+        dealer.compete(playerA)
+        players.forEach { playerB -> playerB.compete(playerA) }
+    }
 }
 
 fun drawMore(player: Player, deck: Deck) {
