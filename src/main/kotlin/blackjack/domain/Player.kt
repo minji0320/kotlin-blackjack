@@ -21,7 +21,7 @@ open class Player(val name: String, open val cards: MutableList<Card> = mutableL
     open fun isAbleToDraw(): Boolean = calculateScore() < BLACK_JACK_SCORE
 
     fun bet(bettingAmount: Int) {
-        amount += bettingAmount
+        amount = bettingAmount
     }
 
     fun drawCard(deck: Deck, count: Int = 1) {

@@ -90,4 +90,11 @@ internal class PlayerTest {
         assertThat(player.convertResultToString()).isEqualTo("승")
         assertThat(dealer.convertResultToString()).isEqualTo("1패")
     }
+
+    @Test
+    fun `베팅 시 금액이 옳게 저장되는지 체크`() {
+        player = Player("A")
+        player.bet(1000)
+        assertThat(player.amount).isEqualTo(1000)
+    }
 }
