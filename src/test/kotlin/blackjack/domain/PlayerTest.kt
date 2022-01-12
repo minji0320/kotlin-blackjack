@@ -6,6 +6,15 @@ import org.junit.jupiter.api.Test
 internal class PlayerTest {
     private lateinit var deck: Deck
     private lateinit var player: Player
+    private val bustCards = mutableListOf(
+        Card(Suit.CLUBS, Denomination.SIX),
+        Card(Suit.HEARTS, Denomination.TEN),
+        Card(Suit.DIAMONDS, Denomination.EIGHT)
+    )
+    private val blackjackCards = mutableListOf(
+        Card(Suit.CLUBS, Denomination.ACE),
+        Card(Suit.HEARTS, Denomination.TEN)
+    )
 
     @Test
     fun `플레이어가 카드 draw 시 보유한 카드 개수 증가하는지 테스트`() {
@@ -96,5 +105,137 @@ internal class PlayerTest {
         player = Player("A")
         player.bet(1000)
         assertThat(player.betting).isEqualTo(1000)
+    }
+
+    @Test
+    fun `dealer가 Bust 상태인 경우`() {
+        player = Player(
+            "A",
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.THREE),
+                Card(Suit.HEARTS, Denomination.TEN)
+            )
+        )
+
+        val dealer = Dealer(bustCards)
+
+        player.bet(1000)
+        player.compete(dealer)
+        assertThat(player.profit).isEqualTo(1000)
+        assertThat(dealer.profit).isEqualTo(-1000)
+    }
+
+    @Test
+    fun `player가 Bust 상태인 경우`() {
+        player = Player("A", bustCards)
+
+        val dealer = Dealer(
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.SEVEN),
+                Card(Suit.HEARTS, Denomination.EIGHT),
+            )
+        )
+
+        player.bet(1000)
+        player.compete(dealer)
+        assertThat(player.profit).isEqualTo(-1000)
+        assertThat(dealer.profit).isEqualTo(1000)
+    }
+
+    @Test
+    fun `dealer와 player 모두 블랙잭인 경우`() {
+        player = Player("A", blackjackCards)
+        val dealer = Dealer(blackjackCards)
+
+        player.bet(1000)
+        player.compete(dealer)
+        assertThat(player.profit).isEqualTo(0)
+        assertThat(dealer.profit).isEqualTo(0)
+    }
+
+    @Test
+    fun `player만 블랙잭인 경우`() {
+        player = Player("A", blackjackCards)
+
+        val dealer = Dealer(
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.SEVEN),
+                Card(Suit.HEARTS, Denomination.EIGHT),
+            )
+        )
+
+        player.bet(1000)
+        player.compete(dealer)
+        assertThat(player.profit).isEqualTo(1500)
+        assertThat(dealer.profit).isEqualTo(-1500)
+    }
+
+    @Test
+    fun `player의 점수가 더 높은 경우`() {
+        player = Player(
+            "A",
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.EIGHT),
+                Card(Suit.HEARTS, Denomination.TEN)
+            )
+        )
+
+        val dealer = Dealer(
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.SEVEN),
+                Card(Suit.HEARTS, Denomination.EIGHT),
+            )
+        )
+
+        player.bet(1000)
+        player.compete(dealer)
+        assertThat(player.profit).isEqualTo(1000)
+        assertThat(dealer.profit).isEqualTo(-1000)
+    }
+
+    @Test
+    fun `dealer와 player의 점수가 같은 경우`() {
+        player = Player(
+            "A",
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.EIGHT),
+                Card(Suit.HEARTS, Denomination.TEN)
+            )
+        )
+
+        val dealer = Dealer(
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.TEN),
+                Card(Suit.HEARTS, Denomination.EIGHT),
+            )
+        )
+
+        player.bet(1000)
+        player.compete(dealer)
+        assertThat(player.profit).isEqualTo(0)
+        assertThat(dealer.profit).isEqualTo(0)
+    }
+
+    @Test
+    fun `player의 점수가 더 낮은 경우`() {
+        player = Player(
+            "A",
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.TWO),
+                Card(Suit.HEARTS, Denomination.TEN)
+            )
+        )
+
+        val dealer = Dealer(
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.SEVEN),
+                Card(Suit.HEARTS, Denomination.EIGHT),
+            )
+        )
+
+        player.bet(1000)
+        player.compete(dealer)
+        assertThat(player.profit).isEqualTo(-1000)
+        assertThat(dealer.profit).isEqualTo(1000)
     }
 }
