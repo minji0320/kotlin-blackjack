@@ -1,7 +1,7 @@
 package blackjack.domain
 
 class Dealer(override val cards: MutableList<Card> = mutableListOf()) : Player(NAME, cards) {
-    override fun isAbleToDraw(): Boolean = calculateScore() <= CRITERIA_FOR_MORE_DRAW
+    override fun isAbleToDraw(): Boolean = score <= CRITERIA_FOR_MORE_DRAW
 
     override fun convertResultToString(): String {
         val strBuffer = StringBuffer("")
@@ -18,7 +18,6 @@ class Dealer(override val cards: MutableList<Card> = mutableListOf()) : Player(N
 
         return strBuffer.toString().trim()
     }
-    fun isBust(): Boolean = calculateScore() > BLACK_JACK_SCORE
 
     companion object {
         private const val NAME = "딜러"

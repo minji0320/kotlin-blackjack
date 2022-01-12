@@ -45,9 +45,9 @@ object ResultView {
 
     fun showGameResult(players: List<Player>, dealer: Dealer) {
         println()
-        println(SHOW_PLAYER_CARDS_AND_SCORE.format(dealer.name, dealer.cards.joinToString(", "), dealer.calculateScore()))
+        println(SHOW_PLAYER_CARDS_AND_SCORE.format(dealer.name, dealer.cards.joinToString(", "), dealer.score))
         players.forEach {
-            println(SHOW_PLAYER_CARDS_AND_SCORE.format(it.name, it.cards.joinToString(", "), it.calculateScore()))
+            println(SHOW_PLAYER_CARDS_AND_SCORE.format(it.name, it.cards.joinToString(", "), it.score))
         }
 
         println(FINAL_RESULT_MSG)

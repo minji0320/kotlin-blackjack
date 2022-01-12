@@ -47,7 +47,10 @@ fun playGame(players: List<Player>, dealer: Dealer, deck: Deck) {
         ResultView.showBust()
     }
 
-    players.forEach { it.compete(dealer) }
+    players.forEach {
+        it.compete(dealer)
+        println(it.profit)
+    }
 }
 
 fun drawMore(player: Player, deck: Deck) {

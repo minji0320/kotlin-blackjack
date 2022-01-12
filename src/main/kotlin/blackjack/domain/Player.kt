@@ -1,13 +1,22 @@
 package blackjack.domain
 
 open class Player(val name: String, open val cards: MutableList<Card> = mutableListOf()) {
-    var amount = 0
+    var betting = 0
+        private set
+    var profit = 0
+        protected set
+    var score = 0
+        get() = calculateScore()
         private set
     protected var winCount = 0
     protected var tieCount = 0
     protected var defeatCount = 0
 
-    fun calculateScore(): Int {
+    fun bet(bettingAmount: Int) {
+        betting = bettingAmount
+    }
+
+    private fun calculateScore(): Int {
         var score = cards.sumOf { it.denomination.score }
         if (isExistAce() && score <= CRITERIA_FOR_CHANGING_ACE) {
             score += ADD_ACE_SCORE
@@ -18,35 +27,41 @@ open class Player(val name: String, open val cards: MutableList<Card> = mutableL
 
     fun isExistAce(): Boolean = cards.find { it.denomination == Denomination.ACE } != null
 
-    open fun isAbleToDraw(): Boolean = calculateScore() < BLACK_JACK_SCORE
-
-    fun bet(bettingAmount: Int) {
-        amount = bettingAmount
-    }
+    open fun isAbleToDraw(): Boolean = score < BLACK_JACK_SCORE
 
     fun drawCard(deck: Deck, count: Int = 1) {
         repeat(count) { cards.add(deck.draw()) }
     }
 
-    fun compete(other: Dealer) {
-        if (this === other) {
-            return
-        }
+    fun isBust(): Boolean = score > BLACK_JACK_SCORE
 
+    fun compete(dealer: Dealer) {
         when {
-            this.calculateScore() > other.calculateScore() -> {
-                winCount++
-                other.defeatCount++
-            }
-            this.calculateScore() == other.calculateScore() -> {
-                tieCount++
-                other.tieCount++
-            }
-            else -> {
-                defeatCount++
-                other.winCount++
-            }
+            dealer.isBust() -> win(dealer)
+            isBust() -> lose(dealer)
+            score > dealer.score -> win(dealer)
+            score == dealer.score -> tie(dealer)
+            else -> lose(dealer)
         }
+    }
+
+    private fun win(dealer: Dealer) {
+        winCount++
+        dealer.defeatCount++
+        profit += betting
+        dealer.profit -= betting
+    }
+
+    private fun lose(dealer: Dealer) {
+        defeatCount++
+        dealer.winCount++
+        profit -= betting
+        dealer.profit += betting
+    }
+
+    private fun tie(dealer: Dealer) {
+        tieCount++
+        dealer.tieCount++
     }
 
     open fun convertResultToString(): String {

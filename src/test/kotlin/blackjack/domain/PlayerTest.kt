@@ -27,7 +27,7 @@ internal class PlayerTest {
     @Test
     fun `플레이어 점수 계산 테스트`() {
         player = Player("A", mutableListOf(Card(Suit.CLUBS, Denomination.SEVEN)))
-        assertThat(player.calculateScore()).isEqualTo(7)
+        assertThat(player.score).isEqualTo(7)
     }
 
     @Test
@@ -39,7 +39,7 @@ internal class PlayerTest {
                 Card(Suit.CLUBS, Denomination.FIVE)
             )
         )
-        assertThat(player.calculateScore()).isEqualTo(16)
+        assertThat(player.score).isEqualTo(16)
     }
 
     @Test
@@ -52,7 +52,7 @@ internal class PlayerTest {
                 Card(Suit.DIAMONDS, Denomination.EIGHT)
             )
         )
-        assertThat(player.calculateScore()).isEqualTo(14)
+        assertThat(player.score).isEqualTo(14)
     }
 
     @Test
@@ -95,6 +95,6 @@ internal class PlayerTest {
     fun `베팅 시 금액이 옳게 저장되는지 체크`() {
         player = Player("A")
         player.bet(1000)
-        assertThat(player.amount).isEqualTo(1000)
+        assertThat(player.betting).isEqualTo(1000)
     }
 }
