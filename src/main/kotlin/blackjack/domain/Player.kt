@@ -35,10 +35,13 @@ open class Player(val name: String, open val cards: MutableList<Card> = mutableL
 
     fun isBust(): Boolean = score > BLACK_JACK_SCORE
 
+    fun isBlackjack(): Boolean = score == BLACK_JACK_SCORE
+
     fun compete(dealer: Dealer) {
         when {
             dealer.isBust() -> win(dealer)
             isBust() -> lose(dealer)
+            isBlackjack() -> blackjack(dealer)
             score > dealer.score -> win(dealer)
             score == dealer.score -> tie(dealer)
             else -> lose(dealer)
@@ -62,6 +65,13 @@ open class Player(val name: String, open val cards: MutableList<Card> = mutableL
     private fun tie(dealer: Dealer) {
         tieCount++
         dealer.tieCount++
+    }
+
+    private fun blackjack(dealer: Dealer) {
+        winCount++
+        dealer.defeatCount++
+        profit += (betting * 1.5).toInt()
+        dealer.profit -= (betting * 1.5).toInt()
     }
 
     open fun convertResultToString(): String {

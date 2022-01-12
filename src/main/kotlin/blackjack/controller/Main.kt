@@ -51,6 +51,7 @@ fun playGame(players: List<Player>, dealer: Dealer, deck: Deck) {
         it.compete(dealer)
         println(it.profit)
     }
+    println(dealer.profit)
 }
 
 fun drawMore(player: Player, deck: Deck) {
