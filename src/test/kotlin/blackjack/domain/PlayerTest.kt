@@ -68,4 +68,28 @@ internal class PlayerTest {
 
         assertThat(player.isAbleToDraw()).isFalse
     }
+
+    @Test
+    fun `playerA가 playerB보다 점수가 높을 때`() {
+        val playerA = Player(
+            "A",
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.SEVEN),
+                Card(Suit.HEARTS, Denomination.TEN)
+            )
+        )
+
+        val playerB = Player(
+            "B",
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.SEVEN),
+                Card(Suit.HEARTS, Denomination.EIGHT),
+            )
+        )
+
+        playerA.compete(playerB)
+        playerB.compete(playerA)
+        assertThat(playerA.convertResultToString()).isEqualTo("1승")
+        assertThat(playerB.convertResultToString()).isEqualTo("1패")
+    }
 }
