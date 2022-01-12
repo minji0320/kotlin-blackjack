@@ -1,9 +1,9 @@
 package blackjack.domain
 
 open class Player(val name: String, open val cards: MutableList<Card> = mutableListOf()) {
-    private var winCount = 0
-    private var tieCount = 0
-    private var defeatCount = 0
+    protected var winCount = 0
+    protected var tieCount = 0
+    protected var defeatCount = 0
 
     fun calculateScore(): Int {
         var score = cards.sumOf { it.denomination.score }
@@ -22,32 +22,34 @@ open class Player(val name: String, open val cards: MutableList<Card> = mutableL
         repeat(count) { cards.add(deck.draw()) }
     }
 
-    fun compete(other: Player) {
+    fun compete(other: Dealer) {
         if (this === other) {
             return
         }
 
         when {
-            this.calculateScore() > other.calculateScore() -> winCount++
-            this.calculateScore() == other.calculateScore() -> tieCount++
-            else -> defeatCount++
+            this.calculateScore() > other.calculateScore() -> {
+                winCount++
+                other.defeatCount++
+            }
+            this.calculateScore() == other.calculateScore() -> {
+                tieCount++
+                other.tieCount++
+            }
+            else -> {
+                defeatCount++
+                other.winCount++
+            }
         }
     }
 
-    fun convertResultToString(): String {
-        var strBuffer = StringBuffer("")
-
-        if (winCount > 0) {
-            strBuffer.append("${winCount}승 ")
+    open fun convertResultToString(): String {
+        return when {
+            winCount > 0 -> "승"
+            tieCount > 0 -> "무"
+            defeatCount > 0 -> "패"
+            else -> throw IllegalArgumentException()
         }
-        if (tieCount > 0) {
-            strBuffer.append("${tieCount}무 ")
-        }
-        if (defeatCount > 0) {
-            strBuffer.append("${defeatCount}패 ")
-        }
-
-        return strBuffer.toString().trim()
     }
 
     companion object {

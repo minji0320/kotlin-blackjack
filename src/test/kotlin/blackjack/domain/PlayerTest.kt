@@ -70,8 +70,8 @@ internal class PlayerTest {
     }
 
     @Test
-    fun `playerA가 playerB보다 점수가 높을 때`() {
-        val playerA = Player(
+    fun `player가 dealer보다 점수가 높을 때`() {
+        player = Player(
             "A",
             mutableListOf(
                 Card(Suit.CLUBS, Denomination.SEVEN),
@@ -79,17 +79,15 @@ internal class PlayerTest {
             )
         )
 
-        val playerB = Player(
-            "B",
+        val dealer = Dealer(
             mutableListOf(
                 Card(Suit.CLUBS, Denomination.SEVEN),
                 Card(Suit.HEARTS, Denomination.EIGHT),
             )
         )
 
-        playerA.compete(playerB)
-        playerB.compete(playerA)
-        assertThat(playerA.convertResultToString()).isEqualTo("1승")
-        assertThat(playerB.convertResultToString()).isEqualTo("1패")
+        player.compete(dealer)
+        assertThat(player.convertResultToString()).isEqualTo("승")
+        assertThat(dealer.convertResultToString()).isEqualTo("1패")
     }
 }
