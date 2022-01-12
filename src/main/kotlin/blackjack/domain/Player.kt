@@ -35,16 +35,17 @@ open class Player(val name: String, open val cards: MutableList<Card> = mutableL
 
     fun isBust(): Boolean = score > BLACK_JACK_SCORE
 
-    fun isBlackjack(): Boolean = score == BLACK_JACK_SCORE
+    fun isBlackjack(): Boolean = cards.size == INITIAL_CARD_COUNT && score == BLACK_JACK_SCORE
 
     fun compete(dealer: Dealer) {
         when {
             dealer.isBust() -> win(dealer)
             isBust() -> lose(dealer)
+            dealer.isBlackjack() && isBlackjack() -> tie(dealer)
             isBlackjack() -> blackjack(dealer)
             score > dealer.score -> win(dealer)
             score == dealer.score -> tie(dealer)
-            else -> lose(dealer)
+            else -> throw IllegalArgumentException()
         }
     }
 
@@ -87,5 +88,6 @@ open class Player(val name: String, open val cards: MutableList<Card> = mutableL
         private const val CRITERIA_FOR_CHANGING_ACE = 11
         private const val ADD_ACE_SCORE = 10
         const val BLACK_JACK_SCORE = 21
+        private const val INITIAL_CARD_COUNT = 2
     }
 }
