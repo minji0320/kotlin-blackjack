@@ -29,7 +29,10 @@ fun initPlayers(names: List<String>): List<Player> {
 
 fun startGame(players: List<Player>, dealer: Dealer, deck: Deck) {
     dealer.drawCard(deck, 2)
-    players.forEach { it.drawCard(deck, 2) }
+    players.forEach {
+        it.bet(InputView.askBettingAmount(it.name))
+        it.drawCard(deck, 2)
+    }
 }
 
 fun playGame(players: List<Player>, dealer: Dealer, deck: Deck) {

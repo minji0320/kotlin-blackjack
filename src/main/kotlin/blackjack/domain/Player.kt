@@ -1,6 +1,8 @@
 package blackjack.domain
 
 open class Player(val name: String, open val cards: MutableList<Card> = mutableListOf()) {
+    var amount = 0
+        private set
     protected var winCount = 0
     protected var tieCount = 0
     protected var defeatCount = 0
@@ -17,6 +19,10 @@ open class Player(val name: String, open val cards: MutableList<Card> = mutableL
     fun isExistAce(): Boolean = cards.find { it.denomination == Denomination.ACE } != null
 
     open fun isAbleToDraw(): Boolean = calculateScore() < BLACK_JACK_SCORE
+
+    fun bet(bettingAmount: Int) {
+        amount += bettingAmount
+    }
 
     fun drawCard(deck: Deck, count: Int = 1) {
         repeat(count) { cards.add(deck.draw()) }
