@@ -27,4 +27,27 @@ internal class DealerTest {
         )
         Assertions.assertThat(dealer.isAbleToDraw()).isFalse
     }
+
+    @Test
+    fun `21점 이하인 경우`() {
+        dealer = Dealer(
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.TEN),
+                Card(Suit.DIAMONDS, Denomination.EIGHT),
+            )
+        )
+        Assertions.assertThat(dealer.isBust()).isFalse
+    }
+
+    @Test
+    fun `21점을 초과한 경우`() {
+        dealer = Dealer(
+            mutableListOf(
+                Card(Suit.CLUBS, Denomination.TEN),
+                Card(Suit.DIAMONDS, Denomination.EIGHT),
+                Card(Suit.DIAMONDS, Denomination.SEVEN)
+            )
+        )
+        Assertions.assertThat(dealer.isBust()).isTrue
+    }
 }
